@@ -4,6 +4,7 @@ import Layout from '../components/layout/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useCart } from '@/contexts/CartContext';
 import { ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -86,14 +87,22 @@ type ProductCategory = keyof typeof products;
 
 const CardapioPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ProductCategory>("tradicionais");
+  const { addItem } = useCart();
   const { toast } = useToast();
   
-  const handleAddToCart = (product: typeof products.tradicionais[0]) => {
-    toast({
-      title: "Produto adicionado!",
-      description: `${product.name} foi adicionado ao seu carrinho.`,
-    });
-  };
+  const handleAddToCart = (product) => {
+       // 1) adiciona de fato ao contexto
+       addItem({
+         id: product.id,
+         name: product.name,
+         price: product.price,
+       });
+       // 2) notifica o usuário
+       toast({
+         title: "Produto adicionado!",
+         description: `${product.name} foi adicionado ao seu carrinho.`
+      });
+     };
 
   return (
     <Layout>

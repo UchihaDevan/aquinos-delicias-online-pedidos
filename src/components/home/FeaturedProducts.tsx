@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { ShoppingCart } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';  // ✔️ importa o hook do contexto
 
 // Mock data for featured products
 const products = [
@@ -39,8 +39,16 @@ const products = [
 
 const FeaturedProducts: React.FC = () => {
   const { toast } = useToast();
+ const { addItem } = useCart();  // ✔️ pega addItem do contexto
   
   const handleAddToCart = (product: typeof products[0]) => {
+   // 1) adiciona o item de fato no carrinho
+   addItem({
+     id: product.id,
+     name: product.name,
+     price: product.price,
+   });
+   // 2) exibe o toast
     toast({
       title: "Produto adicionado!",
       description: `${product.name} foi adicionado ao seu carrinho.`,
