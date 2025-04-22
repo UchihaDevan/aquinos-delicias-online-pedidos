@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ShoppingCart, User, Home, Book, Info, Phone } from 'lucide-react';
@@ -35,93 +36,101 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <h1 className="text-2xl font-bold text-aquinos-red">Aquinos Delícias</h1>
-          </Link>
-          
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                to={link.path}
-                className="text-gray-700 hover:text-aquinos-red transition-colors duration-200 flex items-center gap-1"
-              >
-                {link.icon}
-                <span>{link.name}</span>
-              </Link>
-            ))}
-          </nav>
-          
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={handleCartClick}
-              className="text-aquinos-red hover:bg-red-50 relative"
-            >
-              <ShoppingCart size={24} />
-              {items.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-aquinos-yellow text-aquinos-red text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {items.length}
-                </span>
-              )}
-            </Button>
+    <>
+      <header className="sticky top-0 z-50 bg-white shadow-md">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <Link to="/" className="flex items-center">
+              <h1 className="text-2xl font-bold text-aquinos-red">Aquinos Delícias</h1>
+            </Link>
             
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={handleLoginClick}
-              className="text-aquinos-red hover:bg-red-50 hidden md:flex"
-            >
-              <User size={24} />
-            </Button>
-            
-            {/* Mobile Menu Button */}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={toggleMobileMenu}
-              className="text-aquinos-red hover:bg-red-50 md:hidden"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </Button>
-          </div>
-        </div>
-        
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden mt-3 py-3 border-t border-gray-200 animate-fade-in">
-            <nav className="flex flex-col space-y-3">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-6">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   to={link.path}
-                  className="text-gray-700 hover:text-aquinos-red p-2 flex items-center gap-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-700 hover:text-aquinos-red transition-colors duration-200 flex items-center gap-1"
                 >
                   {link.icon}
                   <span>{link.name}</span>
                 </Link>
               ))}
+            </nav>
+            
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3">
               <Button 
                 variant="ghost" 
-                onClick={handleLoginClick}
-                className="justify-start text-gray-700 hover:text-aquinos-red p-2"
+                size="icon" 
+                onClick={handleCartClick}
+                className="text-aquinos-red hover:bg-red-50 relative"
               >
-                <User size={18} className="mr-2" />
-                <span>Login/Cadastro</span>
+                <ShoppingCart size={24} />
+                {items.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-aquinos-yellow text-aquinos-red text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {items.length}
+                  </span>
+                )}
               </Button>
-            </nav>
+              
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={handleLoginClick}
+                className="text-aquinos-red hover:bg-red-50 hidden md:flex"
+              >
+                <User size={24} />
+              </Button>
+              
+              {/* Mobile Menu Button */}
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={toggleMobileMenu}
+                className="text-aquinos-red hover:bg-red-50 md:hidden"
+              >
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </Button>
+            </div>
           </div>
-        )}
-      </div>
-    </header>
+          
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-3 py-3 border-t border-gray-200 animate-fade-in">
+              <nav className="flex flex-col space-y-3">
+                {navLinks.map((link) => (
+                  <Link 
+                    key={link.name} 
+                    to={link.path}
+                    className="text-gray-700 hover:text-aquinos-red p-2 flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.icon}
+                    <span>{link.name}</span>
+                  </Link>
+                ))}
+                <Button 
+                  variant="ghost" 
+                  onClick={handleLoginClick}
+                  className="justify-start text-gray-700 hover:text-aquinos-red p-2"
+                >
+                  <User size={18} className="mr-2" />
+                  <span>Login/Cadastro</span>
+                </Button>
+              </nav>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Cart Drawer */}
+      <CartDrawer 
+        open={cartOpen} 
+        onClose={() => setCartOpen(false)} 
+      />
+    </>
   );
 };
 
