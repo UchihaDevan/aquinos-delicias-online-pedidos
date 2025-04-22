@@ -1,9 +1,10 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ShoppingCart, User, Home, Book, Info, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import CartDrawer from '../cart/CartDrawer';
+import { useCart } from '@/contexts/CartContext';
 
 const navLinks = [
   { name: "Início", path: "/", icon: <Home size={18} /> },
@@ -14,17 +15,16 @@ const navLinks = [
 
 const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const { toast } = useToast();
+  const { items } = useCart();
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
   
   const handleCartClick = () => {
-    toast({
-      title: "Carrinho",
-      description: "Esta funcionalidade estará disponível em breve!",
-    });
+    setCartOpen(true);
   };
   
   const handleLoginClick = () => {
@@ -63,9 +63,14 @@ const Header: React.FC = () => {
               variant="ghost" 
               size="icon" 
               onClick={handleCartClick}
-              className="text-aquinos-red hover:bg-red-50"
+              className="text-aquinos-red hover:bg-red-50 relative"
             >
               <ShoppingCart size={24} />
+              {items.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-aquinos-yellow text-aquinos-red text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {items.length}
+                </span>
+              )}
             </Button>
             
             <Button 
